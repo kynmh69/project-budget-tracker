@@ -16,13 +16,8 @@ fi
 echo "⬇️ Installing Go dependencies..."
 go mod tidy
 
-# Generate Prisma client
-echo "🔧 Generating Prisma client..."
-go run github.com/steebchen/prisma-client-go generate
-
-# Push database schema
-echo "💾 Setting up database..."
-go run github.com/steebchen/prisma-client-go db push
+# Database setup will be handled by GORM AutoMigrate
+echo "💾 Database will be set up on first run."
 
 echo "✅ Backend setup complete!"
 

@@ -1,13 +1,12 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net/http"
 	"os"
 
-	"project-budget-tracker/handlers"
 	"project-budget-tracker/db"
+	"project-budget-tracker/handlers"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -15,15 +14,7 @@ import (
 
 func main() {
 	// Initialize database
-	client := db.NewClient()
-	if err := client.Prisma.Connect(); err != nil {
-		log.Fatal("Failed to connect to database:", err)
-	}
-	defer func() {
-		if err := client.Prisma.Disconnect(); err != nil {
-			log.Println("Failed to disconnect from database:", err)
-		}
-	}()
+	db.InitDB()
 
 	// Create Echo instance
 	e := echo.New()
@@ -34,7 +25,7 @@ func main() {
 	e.Use(middleware.CORS())
 
 	// Initialize handlers
-	h := handlers.NewHandler(client)
+	h := handlers.NewHandler(db.DB)
 
 	// Routes
 	api := e.Group("/api")
